@@ -89,6 +89,8 @@ namespace ts {
          */
         let pendingExpressions: Expression[] | undefined;
 
+        let test: boolean = false;
+
         return transformSourceFileOrBundle;
 
         function transformSourceFileOrBundle(node: SourceFile | Bundle) {
@@ -99,6 +101,11 @@ namespace ts {
         }
 
         function transformBundle(node: Bundle) {
+            test = !!node.prepends.find(prepend => {
+                return prepend.kind === SyntaxKind.InputFiles
+                    && (prepend.javascriptText.startsWith('"use strict"') || prepend.javascriptText.startsWith("'use strict'"));
+            });
+
             return createBundle(node.sourceFiles.map(transformSourceFile), mapDefined(node.prepends, prepend => {
                 if (prepend.kind === SyntaxKind.InputFiles) {
                     return createUnparsedSourceFile(prepend.javascriptText, prepend.javascriptMapPath, prepend.javascriptMapText);
@@ -563,7 +570,8 @@ namespace ts {
         function visitSourceFile(node: SourceFile) {
             const alwaysStrict = getStrictOptionValue(compilerOptions, "alwaysStrict") &&
                 !(isExternalModule(node) && moduleKind >= ModuleKind.ES2015) &&
-                !isJsonSourceFile(node);
+                !isJsonSourceFile(node) &&
+                !test;
 
             return updateSourceFileNode(
                 node,
