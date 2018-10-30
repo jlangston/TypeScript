@@ -1,5 +1,5 @@
 tests/cases/compiler/genericTypeConstraints.ts(9,31): error TS2344: Type 'FooExtended' does not satisfy the constraint 'Foo'.
-  Property 'fooMethod' is missing in type 'FooExtended'.
+  Index signature is missing in type 'Foo'.
 
 
 ==== tests/cases/compiler/genericTypeConstraints.ts (1 errors) ====
@@ -14,7 +14,7 @@ tests/cases/compiler/genericTypeConstraints.ts(9,31): error TS2344: Type 'FooExt
     class BarExtended extends Bar<FooExtended> {
                                   ~~~~~~~~~~~
 !!! error TS2344: Type 'FooExtended' does not satisfy the constraint 'Foo'.
-!!! error TS2344:   Property 'fooMethod' is missing in type 'FooExtended'.
+!!! error TS2344:   Index signature is missing in type 'Foo'.
         constructor() {
             super();
         }

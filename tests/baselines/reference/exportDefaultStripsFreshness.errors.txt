@@ -1,7 +1,7 @@
 tests/cases/compiler/index.ts(10,6): error TS2345: Argument of type '{ foob: string; }' is not assignable to parameter of type 'IFoo'.
-  Property 'foo' is missing in type '{ foob: string; }'.
+  Index signature is missing in type 'IFoo'.
 tests/cases/compiler/index.ts(12,6): error TS2345: Argument of type '{ foob: string; }' is not assignable to parameter of type 'IFoo'.
-  Property 'foo' is missing in type '{ foob: string; }'.
+  Index signature is missing in type 'IFoo'.
 
 
 ==== tests/cases/compiler/items.ts (0 errors) ====
@@ -25,10 +25,10 @@ tests/cases/compiler/index.ts(12,6): error TS2345: Argument of type '{ foob: str
     nFoo(q); // for comparison
          ~
 !!! error TS2345: Argument of type '{ foob: string; }' is not assignable to parameter of type 'IFoo'.
-!!! error TS2345:   Property 'foo' is missing in type '{ foob: string; }'.
+!!! error TS2345:   Index signature is missing in type 'IFoo'.
     
     nFoo(B);
          ~
 !!! error TS2345: Argument of type '{ foob: string; }' is not assignable to parameter of type 'IFoo'.
-!!! error TS2345:   Property 'foo' is missing in type '{ foob: string; }'.
+!!! error TS2345:   Index signature is missing in type 'IFoo'.
     

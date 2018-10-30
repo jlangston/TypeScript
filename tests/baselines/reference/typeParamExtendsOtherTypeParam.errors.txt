@@ -1,19 +1,19 @@
 tests/cases/compiler/typeParamExtendsOtherTypeParam.ts(12,26): error TS2344: Type '{ b: string; }' does not satisfy the constraint '{ a: string; }'.
-  Property 'a' is missing in type '{ b: string; }'.
+  Index signature is missing in type '{ a: string; }'.
 tests/cases/compiler/typeParamExtendsOtherTypeParam.ts(13,26): error TS2344: Type '{ a: number; }' does not satisfy the constraint '{ a: string; }'.
   Types of property 'a' are incompatible.
     Type 'number' is not assignable to type 'string'.
 tests/cases/compiler/typeParamExtendsOtherTypeParam.ts(14,26): error TS2344: Type '{ b: string; }' does not satisfy the constraint '{ a: string; }'.
-  Property 'a' is missing in type '{ b: string; }'.
+  Index signature is missing in type '{ a: string; }'.
 tests/cases/compiler/typeParamExtendsOtherTypeParam.ts(15,26): error TS2344: Type '{ a: number; }' does not satisfy the constraint '{ a: string; }'.
   Types of property 'a' are incompatible.
     Type 'number' is not assignable to type 'string'.
 tests/cases/compiler/typeParamExtendsOtherTypeParam.ts(16,37): error TS2344: Type '{ a: string; }' does not satisfy the constraint '{ a: string; b: number; }'.
-  Property 'b' is missing in type '{ a: string; }'.
+  Index signature is missing in type '{ a: string; b: number; }'.
 tests/cases/compiler/typeParamExtendsOtherTypeParam.ts(17,37): error TS2344: Type '{ a: string; }' does not satisfy the constraint '{ a: string; b: number; }'.
-  Property 'b' is missing in type '{ a: string; }'.
+  Index signature is missing in type '{ a: string; b: number; }'.
 tests/cases/compiler/typeParamExtendsOtherTypeParam.ts(28,15): error TS2344: Type 'I1' does not satisfy the constraint 'I2'.
-  Property 'b' is missing in type 'I1'.
+  Index signature is missing in type 'I2'.
 tests/cases/compiler/typeParamExtendsOtherTypeParam.ts(29,15): error TS2344: Type 'I1' does not satisfy the constraint 'I2'.
 
 
@@ -32,7 +32,7 @@ tests/cases/compiler/typeParamExtendsOtherTypeParam.ts(29,15): error TS2344: Typ
     var x1: A<{ a: string;}, { b: string }>;
                              ~~~~~~~~~~~~~
 !!! error TS2344: Type '{ b: string; }' does not satisfy the constraint '{ a: string; }'.
-!!! error TS2344:   Property 'a' is missing in type '{ b: string; }'.
+!!! error TS2344:   Index signature is missing in type '{ a: string; }'.
     var x2: A<{ a: string;}, { a: number }>;
                              ~~~~~~~~~~~~~
 !!! error TS2344: Type '{ a: number; }' does not satisfy the constraint '{ a: string; }'.
@@ -41,7 +41,7 @@ tests/cases/compiler/typeParamExtendsOtherTypeParam.ts(29,15): error TS2344: Typ
     var x3: B<{ a: string;}, { b: string }>;
                              ~~~~~~~~~~~~~
 !!! error TS2344: Type '{ b: string; }' does not satisfy the constraint '{ a: string; }'.
-!!! error TS2344:   Property 'a' is missing in type '{ b: string; }'.
+!!! error TS2344:   Index signature is missing in type '{ a: string; }'.
     var x4: B<{ a: string;}, { a: number }>;
                              ~~~~~~~~~~~~~
 !!! error TS2344: Type '{ a: number; }' does not satisfy the constraint '{ a: string; }'.
@@ -50,11 +50,11 @@ tests/cases/compiler/typeParamExtendsOtherTypeParam.ts(29,15): error TS2344: Typ
     var x5: A<{ a: string; b: number }, { a: string }>;
                                         ~~~~~~~~~~~~~
 !!! error TS2344: Type '{ a: string; }' does not satisfy the constraint '{ a: string; b: number; }'.
-!!! error TS2344:   Property 'b' is missing in type '{ a: string; }'.
+!!! error TS2344:   Index signature is missing in type '{ a: string; b: number; }'.
     var x6: B<{ a: string; b: number }, { a: string }>;
                                         ~~~~~~~~~~~~~
 !!! error TS2344: Type '{ a: string; }' does not satisfy the constraint '{ a: string; b: number; }'.
-!!! error TS2344:   Property 'b' is missing in type '{ a: string; }'.
+!!! error TS2344:   Index signature is missing in type '{ a: string; b: number; }'.
     
     interface I1 {
         a: string;
@@ -68,7 +68,7 @@ tests/cases/compiler/typeParamExtendsOtherTypeParam.ts(29,15): error TS2344: Typ
     var x7: A<I2, I1>;
                   ~~
 !!! error TS2344: Type 'I1' does not satisfy the constraint 'I2'.
-!!! error TS2344:   Property 'b' is missing in type 'I1'.
+!!! error TS2344:   Index signature is missing in type 'I2'.
     var x8: B<I2, I1>;
                   ~~
 !!! error TS2344: Type 'I1' does not satisfy the constraint 'I2'.

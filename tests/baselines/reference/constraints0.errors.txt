@@ -1,5 +1,5 @@
 tests/cases/compiler/constraints0.ts(14,11): error TS2344: Type 'B' does not satisfy the constraint 'A'.
-  Property 'a' is missing in type 'B'.
+  Index signature is missing in type 'A'.
 
 
 ==== tests/cases/compiler/constraints0.ts (1 errors) ====
@@ -19,6 +19,6 @@ tests/cases/compiler/constraints0.ts(14,11): error TS2344: Type 'B' does not sat
     var v2: C<B>; // should not work
               ~
 !!! error TS2344: Type 'B' does not satisfy the constraint 'A'.
-!!! error TS2344:   Property 'a' is missing in type 'B'.
+!!! error TS2344:   Index signature is missing in type 'A'.
     
     var y = v1.x.a; // 'a' should be of type 'number'

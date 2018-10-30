@@ -1,6 +1,6 @@
 tests/cases/conformance/es6/classExpressions/typeArgumentInferenceWithClassExpression2.ts(6,5): error TS2345: Argument of type 'typeof (Anonymous class)' is not assignable to parameter of type 'typeof (Anonymous class)'.
   Type '(Anonymous class)' is not assignable to type 'foo<{}>.(Anonymous class)'.
-    Property 'prop' is missing in type '(Anonymous class)'.
+    Index signature is missing in type 'foo<{}>.(Anonymous class)'.
 
 
 ==== tests/cases/conformance/es6/classExpressions/typeArgumentInferenceWithClassExpression2.ts (1 errors) ====
@@ -13,4 +13,4 @@ tests/cases/conformance/es6/classExpressions/typeArgumentInferenceWithClassExpre
         ~~~~~
 !!! error TS2345: Argument of type 'typeof (Anonymous class)' is not assignable to parameter of type 'typeof (Anonymous class)'.
 !!! error TS2345:   Type '(Anonymous class)' is not assignable to type 'foo<{}>.(Anonymous class)'.
-!!! error TS2345:     Property 'prop' is missing in type '(Anonymous class)'.
+!!! error TS2345:     Index signature is missing in type 'foo<{}>.(Anonymous class)'.
