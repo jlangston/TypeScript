@@ -12203,7 +12203,7 @@ namespace ts {
                 const unmatchedProperty = getUnmatchedProperty(source, target, requireOptionalProperties);
                 if (unmatchedProperty) {
                     if (reportErrors) {
-                        reportError(Diagnostics.Property_0_is_missing_in_type_1, symbolToString(unmatchedProperty), typeToString(source));
+                        reportError(Diagnostics.Index_signature_is_missing_in_type_0, typeToString(target));
                     }
                     return Ternary.False;
                 }
