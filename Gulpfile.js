@@ -333,6 +333,7 @@ const lint = series([
     lintFoldStart,
     ...["scripts/tslint/tsconfig.json", "src/tsconfig-base.json"].map(project => {
         const lintOne = () => {
+            console.log(project);
             const args = ["node_modules/tslint/bin/tslint", "--project", project, "--formatters-dir", "./built/local/tslint/formatters", "--format", "autolinkableStylish"];
             if (cmdLineOptions.fix) args.push("--fix");
             log(`Linting: node ${args.join(" ")}`);
