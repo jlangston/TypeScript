@@ -5,11 +5,13 @@
         "no-unnecessary-type-assertion": true,
 
         "array-type": [true, "array"],
-        "ban": [
+
+        "ban": [/** todo */
             true,
             "setInterval",
             "setTimeout"
         ],
+
         "ban-types": {
             "options": [
                 ["Object", "Avoid using the `Object` type. Did you mean `object`?"],
@@ -19,43 +21,50 @@
                 ["String", "Avoid using the `String` type. Did you mean `string`?"]
             ]
         },
-        "boolean-trivia": true,
+        "boolean-trivia": true, /** custom rule*/
+
         "class-name": true,
+
         "comment-format": [true,
             "check-space"
-        ],
+        ], /** todo */
+
         "curly":[true, "ignore-same-line"],
-        "debug-assert": true,
+        
+        "debug-assert": true, /**  custom rule */
+
         "indent": [true,
             "spaces"
         ],
+
         "interface-name": [true, "never-prefix"],
         "interface-over-type-literal": true,
         "jsdoc-format": true,
         "linebreak-style": [true, "CRLF"],
-        "next-line": [true,
+        "next-line": [true, /**  custom rule */
             "check-catch",
             "check-else"
         ],
-        "no-bom": true,
-        "no-double-space": true,
+        "no-bom": true, /**  custom rule */
+        "no-double-space": true, /**  custom rule */
         "no-eval": true,
-        "no-in-operator": true,
-        "no-increment-decrement": true,
+        "no-in-operator": true, /**  custom rule */
+        "no-increment-decrement": true, /* custom rule replased by no-plusplus */
         "no-inferrable-types": true,
         "no-internal-module": true,
         "no-null-keyword": true,
         "no-switch-case-fall-through": true,
         "no-trailing-whitespace": [true, "ignore-template-strings"],
-        "no-type-assertion-whitespace": true,
+        "no-type-assertion-whitespace": true, /**  custom rule */
         "no-unnecessary-qualifier": true,
         "no-var-keyword": true,
         "object-literal-shorthand": true,
-        "object-literal-surrounding-space": true,
+        "object-literal-surrounding-space": true,  /**  custom rule */
         "one-line": [true,
             "check-open-brace",
             "check-whitespace"
-        ],
+        ], /** unimplemented */
+
         "prefer-const": true,
         "quotemark": [true,
             "double",
@@ -64,7 +73,7 @@
         "semicolon": [true, "always", "ignore-bound-class-methods"],
         "space-within-parens": true,
         "triple-equals": true,
-        "type-operator-spacing": true,
+        "type-operator-spacing": true, /**  custom rule */
         "typedef-whitespace": [
             true,
             {
@@ -89,17 +98,18 @@
             "check-module",
             "check-separator",
             "check-type"
-        ],
+        ], /** not implemented */
 
         // Config different from tslint:latest
         "no-implicit-dependencies": [true, "dev"],
         "object-literal-key-quotes": [true, "consistent-as-needed"],
-        "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"],
+        "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"], /** not implemented */
 
         // TODO
         "arrow-parens": false, // [true, "ban-single-arg-parens"]
         "arrow-return-shorthand": false,
-        "ban-types": false,
+        // "ban-types": false,
+
         "forin": false,
         "member-access": false, // [true, "no-public"]
         "no-conditional-assignment": false,
@@ -111,12 +121,12 @@
         "no-submodule-imports": false,
         "no-var-requires": false,
         "ordered-imports": false,
-        "prefer-conditional-expression": false,
+        "prefer-conditional-expression": false, /** not implemented */
         "radix": false,
         "trailing-comma": false,
 
         // These should be done automatically by a formatter. https://github.com/Microsoft/TypeScript/issues/18340
-        "align": false,
+        "align": false, /** not implemented */
         "eofline": false,
         "max-line-length": false,
         "no-consecutive-blank-lines": false,
