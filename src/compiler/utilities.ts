@@ -1980,13 +1980,13 @@ namespace ts {
     }
 
     export function isBindableObjectDefinePropertyCall(expr: CallExpression): expr is BindableObjectDefinePropertyCall {
-            return length(expr.arguments) === 3 &&
-                isPropertyAccessExpression(expr.expression) &&
-                isIdentifier(expr.expression.expression) &&
-                idText(expr.expression.expression) === "Object" &&
-                idText(expr.expression.name) === "defineProperty" &&
-                isStringOrNumericLiteralLike(expr.arguments[1]) &&
-                isEntityNameExpression(expr.arguments[0]);
+        return length(expr.arguments) === 3 &&
+            isPropertyAccessExpression(expr.expression) &&
+            isIdentifier(expr.expression.expression) &&
+            idText(expr.expression.expression) === "Object" &&
+            idText(expr.expression.name) === "defineProperty" &&
+            isStringOrNumericLiteralLike(expr.arguments[1]) &&
+            isEntityNameExpression(expr.arguments[0]);
     }
 
     function getAssignmentDeclarationKindWorker(expr: BinaryExpression | CallExpression): AssignmentDeclarationKind {
@@ -2009,8 +2009,8 @@ namespace ts {
         }
         const lhs = expr.left;
         if (isEntityNameExpression(lhs.expression) && lhs.name.escapedText === "prototype" && isObjectLiteralExpression(getInitializerOfBinaryExpression(expr))) {
-                // F.prototype = { ... }
-                return AssignmentDeclarationKind.Prototype;
+            // F.prototype = { ... }
+            return AssignmentDeclarationKind.Prototype;
         }
         return getAssignmentDeclarationPropertyAccessKind(lhs);
     }
@@ -2655,6 +2655,7 @@ namespace ts {
         | SyntaxKind.WhitespaceTrivia
         | SyntaxKind.ShebangTrivia
         | SyntaxKind.ConflictMarkerTrivia;
+
     export function isTrivia(token: SyntaxKind): token is TriviaKind {
         return SyntaxKind.FirstTriviaToken <= token && token <= SyntaxKind.LastTriviaToken;
     }

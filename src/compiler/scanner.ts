@@ -314,14 +314,14 @@ namespace ts {
         let pos = 0;
         let lineStart = 0;
         while (pos < text.length) {
-           const ch = text.charCodeAt(pos);
-           pos++;
-           switch (ch) {
+            const ch = text.charCodeAt(pos);
+            pos++;
+            switch (ch) {
                 case CharacterCodes.carriageReturn:
                     if (text.charCodeAt(pos) === CharacterCodes.lineFeed) {
                         pos++;
                     }
-                    // falls through
+                // falls through
                 case CharacterCodes.lineFeed:
                     result.push(lineStart);
                     lineStart = pos;
@@ -427,145 +427,145 @@ namespace ts {
             ch === CharacterCodes.mathematicalSpace ||
             ch === CharacterCodes.ideographicSpace ||
             ch === CharacterCodes.byteOrderMark;
-      }
+    }
 
-      export function isLineBreak(ch: number): boolean {
-          // ES5 7.3:
-          // The ECMAScript line terminator characters are listed in Table 3.
-          //     Table 3: Line Terminator Characters
-          //     Code Unit Value     Name                    Formal Name
-          //     \u000A              Line Feed               <LF>
-          //     \u000D              Carriage Return         <CR>
-          //     \u2028              Line separator          <LS>
-          //     \u2029              Paragraph separator     <PS>
-          // Only the characters in Table 3 are treated as line terminators. Other new line or line
-          // breaking characters are treated as white space but not as line terminators.
+    export function isLineBreak(ch: number): boolean {
+        // ES5 7.3:
+        // The ECMAScript line terminator characters are listed in Table 3.
+        //     Table 3: Line Terminator Characters
+        //     Code Unit Value     Name                    Formal Name
+        //     \u000A              Line Feed               <LF>
+        //     \u000D              Carriage Return         <CR>
+        //     \u2028              Line separator          <LS>
+        //     \u2029              Paragraph separator     <PS>
+        // Only the characters in Table 3 are treated as line terminators. Other new line or line
+        // breaking characters are treated as white space but not as line terminators.
 
-          return ch === CharacterCodes.lineFeed ||
-              ch === CharacterCodes.carriageReturn ||
-              ch === CharacterCodes.lineSeparator ||
-              ch === CharacterCodes.paragraphSeparator;
-      }
+        return ch === CharacterCodes.lineFeed ||
+            ch === CharacterCodes.carriageReturn ||
+            ch === CharacterCodes.lineSeparator ||
+            ch === CharacterCodes.paragraphSeparator;
+    }
 
-      function isDigit(ch: number): boolean {
-          return ch >= CharacterCodes._0 && ch <= CharacterCodes._9;
-      }
+    function isDigit(ch: number): boolean {
+        return ch >= CharacterCodes._0 && ch <= CharacterCodes._9;
+    }
 
-      /* @internal */
-      export function isOctalDigit(ch: number): boolean {
-          return ch >= CharacterCodes._0 && ch <= CharacterCodes._7;
-      }
+    /* @internal */
+    export function isOctalDigit(ch: number): boolean {
+        return ch >= CharacterCodes._0 && ch <= CharacterCodes._7;
+    }
 
-      export function couldStartTrivia(text: string, pos: number): boolean {
-          // Keep in sync with skipTrivia
-          const ch = text.charCodeAt(pos);
-          switch (ch) {
-              case CharacterCodes.carriageReturn:
-              case CharacterCodes.lineFeed:
-              case CharacterCodes.tab:
-              case CharacterCodes.verticalTab:
-              case CharacterCodes.formFeed:
-              case CharacterCodes.space:
-              case CharacterCodes.slash:
-                  // starts of normal trivia
-              case CharacterCodes.lessThan:
-              case CharacterCodes.bar:
-              case CharacterCodes.equals:
-              case CharacterCodes.greaterThan:
-                  // Starts of conflict marker trivia
-                  return true;
-              case CharacterCodes.hash:
-                  // Only if its the beginning can we have #! trivia
-                  return pos === 0;
-              default:
-                  return ch > CharacterCodes.maxAsciiCharacter;
-          }
-      }
+    export function couldStartTrivia(text: string, pos: number): boolean {
+        // Keep in sync with skipTrivia
+        const ch = text.charCodeAt(pos);
+        switch (ch) {
+            case CharacterCodes.carriageReturn:
+            case CharacterCodes.lineFeed:
+            case CharacterCodes.tab:
+            case CharacterCodes.verticalTab:
+            case CharacterCodes.formFeed:
+            case CharacterCodes.space:
+            case CharacterCodes.slash:
+                // starts of normal trivia
+            case CharacterCodes.lessThan:
+            case CharacterCodes.bar:
+            case CharacterCodes.equals:
+            case CharacterCodes.greaterThan:
+                // Starts of conflict marker trivia
+                return true;
+            case CharacterCodes.hash:
+                // Only if its the beginning can we have #! trivia
+                return pos === 0;
+            default:
+                return ch > CharacterCodes.maxAsciiCharacter;
+        }
+    }
 
-      /* @internal */
-      export function skipTrivia(text: string, pos: number, stopAfterLineBreak?: boolean, stopAtComments = false): number {
-          if (positionIsSynthesized(pos)) {
-              return pos;
-          }
+    /* @internal */
+    export function skipTrivia(text: string, pos: number, stopAfterLineBreak?: boolean, stopAtComments = false): number {
+        if (positionIsSynthesized(pos)) {
+            return pos;
+        }
 
-          // Keep in sync with couldStartTrivia
-          while (true) {
-              const ch = text.charCodeAt(pos);
-              switch (ch) {
-                  case CharacterCodes.carriageReturn:
-                      if (text.charCodeAt(pos + 1) === CharacterCodes.lineFeed) {
-                          pos++;
-                      }
-                      // falls through
-                  case CharacterCodes.lineFeed:
-                      pos++;
-                      if (stopAfterLineBreak) {
-                          return pos;
-                      }
-                      continue;
-                  case CharacterCodes.tab:
-                  case CharacterCodes.verticalTab:
-                  case CharacterCodes.formFeed:
-                  case CharacterCodes.space:
-                      pos++;
-                      continue;
-                  case CharacterCodes.slash:
-                      if (stopAtComments) {
-                          break;
-                      }
-                      if (text.charCodeAt(pos + 1) === CharacterCodes.slash) {
-                          pos += 2;
-                          while (pos < text.length) {
-                              if (isLineBreak(text.charCodeAt(pos))) {
-                                  break;
-                              }
-                              pos++;
-                          }
-                          continue;
-                      }
-                      if (text.charCodeAt(pos + 1) === CharacterCodes.asterisk) {
-                          pos += 2;
-                          while (pos < text.length) {
-                              if (text.charCodeAt(pos) === CharacterCodes.asterisk && text.charCodeAt(pos + 1) === CharacterCodes.slash) {
-                                  pos += 2;
-                                  break;
-                              }
-                              pos++;
-                          }
-                          continue;
-                      }
-                      break;
+        // Keep in sync with couldStartTrivia
+        while (true) {
+            const ch = text.charCodeAt(pos);
+            switch (ch) {
+                case CharacterCodes.carriageReturn:
+                    if (text.charCodeAt(pos + 1) === CharacterCodes.lineFeed) {
+                        pos++;
+                    }
+                    // falls through
+                case CharacterCodes.lineFeed:
+                    pos++;
+                    if (stopAfterLineBreak) {
+                        return pos;
+                    }
+                    continue;
+                case CharacterCodes.tab:
+                case CharacterCodes.verticalTab:
+                case CharacterCodes.formFeed:
+                case CharacterCodes.space:
+                    pos++;
+                    continue;
+                case CharacterCodes.slash:
+                    if (stopAtComments) {
+                        break;
+                    }
+                    if (text.charCodeAt(pos + 1) === CharacterCodes.slash) {
+                        pos += 2;
+                        while (pos < text.length) {
+                            if (isLineBreak(text.charCodeAt(pos))) {
+                                break;
+                            }
+                            pos++;
+                        }
+                        continue;
+                    }
+                    if (text.charCodeAt(pos + 1) === CharacterCodes.asterisk) {
+                        pos += 2;
+                        while (pos < text.length) {
+                            if (text.charCodeAt(pos) === CharacterCodes.asterisk && text.charCodeAt(pos + 1) === CharacterCodes.slash) {
+                                pos += 2;
+                                break;
+                            }
+                            pos++;
+                        }
+                        continue;
+                    }
+                    break;
 
-                  case CharacterCodes.lessThan:
-                  case CharacterCodes.bar:
-                  case CharacterCodes.equals:
-                  case CharacterCodes.greaterThan:
-                      if (isConflictMarkerTrivia(text, pos)) {
-                          pos = scanConflictMarkerTrivia(text, pos);
-                          continue;
-                      }
-                      break;
+                case CharacterCodes.lessThan:
+                case CharacterCodes.bar:
+                case CharacterCodes.equals:
+                case CharacterCodes.greaterThan:
+                    if (isConflictMarkerTrivia(text, pos)) {
+                        pos = scanConflictMarkerTrivia(text, pos);
+                        continue;
+                    }
+                    break;
 
-                  case CharacterCodes.hash:
-                      if (pos === 0 && isShebangTrivia(text, pos)) {
-                          pos = scanShebangTrivia(text, pos);
-                          continue;
-                      }
-                      break;
+                case CharacterCodes.hash:
+                    if (pos === 0 && isShebangTrivia(text, pos)) {
+                        pos = scanShebangTrivia(text, pos);
+                        continue;
+                    }
+                    break;
 
-                  default:
-                      if (ch > CharacterCodes.maxAsciiCharacter && (isWhiteSpaceLike(ch))) {
-                          pos++;
-                          continue;
-                      }
-                      break;
-              }
-              return pos;
-          }
-      }
+                default:
+                    if (ch > CharacterCodes.maxAsciiCharacter && (isWhiteSpaceLike(ch))) {
+                        pos++;
+                        continue;
+                    }
+                    break;
+            }
+            return pos;
+        }
+    }
 
-      // All conflict markers consist of the same character repeated seven times.  If it is
-      // a <<<<<<< or >>>>>>> marker then it is also followed by a space.
+    // All conflict markers consist of the same character repeated seven times.  If it is
+    // a <<<<<<< or >>>>>>> marker then it is also followed by a space.
     const mergeConflictMarkerLength = "<<<<<<<".length;
 
     function isConflictMarkerTrivia(text: string, pos: number) {

@@ -1118,18 +1118,18 @@ namespace ts {
 
     export interface KeywordTypeNode extends TypeNode {
         kind: SyntaxKind.AnyKeyword
-            | SyntaxKind.UnknownKeyword
-            | SyntaxKind.NumberKeyword
-            | SyntaxKind.BigIntKeyword
-            | SyntaxKind.ObjectKeyword
-            | SyntaxKind.BooleanKeyword
-            | SyntaxKind.StringKeyword
-            | SyntaxKind.SymbolKeyword
-            | SyntaxKind.ThisKeyword
-            | SyntaxKind.VoidKeyword
-            | SyntaxKind.UndefinedKeyword
-            | SyntaxKind.NullKeyword
-            | SyntaxKind.NeverKeyword;
+        | SyntaxKind.UnknownKeyword
+        | SyntaxKind.NumberKeyword
+        | SyntaxKind.BigIntKeyword
+        | SyntaxKind.ObjectKeyword
+        | SyntaxKind.BooleanKeyword
+        | SyntaxKind.StringKeyword
+        | SyntaxKind.SymbolKeyword
+        | SyntaxKind.ThisKeyword
+        | SyntaxKind.VoidKeyword
+        | SyntaxKind.UndefinedKeyword
+        | SyntaxKind.NullKeyword
+        | SyntaxKind.NeverKeyword;
     }
 
     export interface ImportTypeNode extends NodeWithTypeArguments {

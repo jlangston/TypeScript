@@ -24,7 +24,13 @@
         "@typescript-eslint/explicit-member-accessibility": "off",
         "@typescript-eslint/import/order": "off",
         "indent": "off",
-        "@typescript-eslint/indent": "off",
+        "@typescript-eslint/indent": ["error", 4, {
+            // "flatTernaryExpressions": false,
+            // "CallExpression": { "arguments": 1 },
+            // "FunctionDeclaration": { "parameters": 1, "body": 1 },
+            "ignoredNodes": ["ConditionalExpression", "CallExpression", "FunctionDeclaration", "TSTypeAnnotation"],
+            "SwitchCase": 1
+        }],
         "@typescript-eslint/interface-name-prefix": "error",
         "@typescript-eslint/member-ordering": "off",
         "@typescript-eslint/no-angle-bracket-type-assertion": "off",

@@ -67,7 +67,7 @@ namespace ts {
                 parsesCorrectly("tsFunctionType", "{() => string}");
                 parsesCorrectly("typeArgumentsNotFollowingDot", "{a<>}");
                 parsesCorrectly("functionTypeWithTrailingComma", "{function(a,)}");
-           });
+            });
 
             describe("parsesIncorrectly", () => {
                 parsesIncorrectly("emptyType", "{}");

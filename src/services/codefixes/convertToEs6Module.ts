@@ -318,7 +318,8 @@ namespace ts.codefix {
                     return exportConst();
                 }
             }
-                // falls through
+
+            // falls through
             case SyntaxKind.ArrowFunction:
                 // `exports.f = function() {}` --> `export function f() {}`
                 return functionExpressionToDeclaration(name, modifiers, exported as FunctionExpression | ArrowFunction);

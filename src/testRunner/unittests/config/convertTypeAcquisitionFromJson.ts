@@ -68,7 +68,7 @@ namespace ts {
                         exclude: ["0.js", "1.js"]
                     },
                     errors: <Diagnostic[]>[]
-            });
+                });
         });
 
         it("Convert correctly format tsconfig.json to typeAcquisition ", () => {
@@ -90,7 +90,7 @@ namespace ts {
                         exclude: ["0.js", "1.js"]
                     },
                     errors: <Diagnostic[]>[]
-            });
+                });
         });
 
         it("Convert incorrect format tsconfig.json to typeAcquisition ", () => {

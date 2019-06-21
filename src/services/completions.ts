@@ -837,8 +837,8 @@ namespace ts.Completions {
                         if (!binaryExpressionMayBeOpenTag(parent as BinaryExpression)) {
                             break;
                         }
-                    // falls through
 
+                    // falls through
                     case SyntaxKind.JsxSelfClosingElement:
                     case SyntaxKind.JsxElement:
                     case SyntaxKind.JsxOpeningElement:

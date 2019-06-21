@@ -769,8 +769,8 @@ namespace ts {
                         if (getAssignmentDeclarationKind(node as BinaryExpression) !== AssignmentDeclarationKind.None) {
                             addDeclaration(node as BinaryExpression);
                         }
-                    // falls through
 
+                    // falls through
                     default:
                         forEachChild(node, visit);
                 }

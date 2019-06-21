@@ -1149,7 +1149,6 @@ namespace ts {
                         return emitIdentifier(<Identifier>node);
 
                     // Parse tree nodes
-
                     // Names
                     case SyntaxKind.QualifiedName:
                         return emitQualifiedName(<QualifiedName>node);

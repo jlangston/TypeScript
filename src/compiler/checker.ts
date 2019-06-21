@@ -925,8 +925,7 @@ namespace ts {
                 }
                 if (source.exports) {
                     if (!target.exports) target.exports = createSymbolTable();
-                    mergeSymbolTable(target.exports, source.exports, unidirectional
-                        );
+                    mergeSymbolTable(target.exports, source.exports, unidirectional);
                 }
                 if (!unidirectional) {
                     recordMergedSymbol(target, source);
@@ -4019,7 +4018,7 @@ namespace ts {
                         propertyName,
                         optionalToken,
                         propertyTypeNode,
-                    /*initializer*/ undefined);
+                        /*initializer*/ undefined);
                     if (propertySymbol.valueDeclaration) {
                         // Copy comments to node for declaration emit
                         setCommentRange(propertySignature, propertySymbol.valueDeclaration);
@@ -4443,7 +4442,7 @@ namespace ts {
                     const symbol = chain[index];
 
                     if (index === 0) {
-                       context.flags |= NodeBuilderFlags.InInitialEntityName;
+                        context.flags |= NodeBuilderFlags.InInitialEntityName;
                     }
                     const symbolName = getNameOfSymbolAsWritten(symbol, context);
                     context.approximateLength += symbolName.length + 1;
@@ -4918,7 +4917,7 @@ namespace ts {
         }
 
         function getDeclarationContainer(node: Node): Node {
-           return findAncestor(getRootDeclaration(node), node => {
+            return findAncestor(getRootDeclaration(node), node => {
                 switch (node.kind) {
                     case SyntaxKind.VariableDeclaration:
                     case SyntaxKind.VariableDeclarationList:
@@ -11639,7 +11638,7 @@ namespace ts {
                 target === globalObjectType ? !!(source.flags & (TypeFlags.Object | TypeFlags.NonPrimitive)) :
                 target === globalFunctionType ? !!(source.flags & TypeFlags.Object) && isFunctionObjectType(source as ObjectType) :
                 hasBaseType(source, getTargetType(target));
-            }
+        }
 
         /**
          * This is *not* a bi-directional relationship.
@@ -19826,25 +19825,25 @@ namespace ts {
         }
 
         function getIntrinsicAttributesTypeFromStringLiteralType(type: StringLiteralType, location: Node): Type | undefined {
-                // If the elemType is a stringLiteral type, we can then provide a check to make sure that the string literal type is one of the Jsx intrinsic element type
-                // For example:
-                //      var CustomTag: "h1" = "h1";
-                //      <CustomTag> Hello World </CustomTag>
-                const intrinsicElementsType = getJsxType(JsxNames.IntrinsicElements, location);
-                if (intrinsicElementsType !== errorType) {
-                    const stringLiteralTypeName = type.value;
-                    const intrinsicProp = getPropertyOfType(intrinsicElementsType, escapeLeadingUnderscores(stringLiteralTypeName));
-                    if (intrinsicProp) {
-                        return getTypeOfSymbol(intrinsicProp);
-                    }
-                    const indexSignatureType = getIndexTypeOfType(intrinsicElementsType, IndexKind.String);
-                    if (indexSignatureType) {
-                        return indexSignatureType;
-                    }
-                    return undefined;
+            // If the elemType is a stringLiteral type, we can then provide a check to make sure that the string literal type is one of the Jsx intrinsic element type
+            // For example:
+            //      var CustomTag: "h1" = "h1";
+            //      <CustomTag> Hello World </CustomTag>
+            const intrinsicElementsType = getJsxType(JsxNames.IntrinsicElements, location);
+            if (intrinsicElementsType !== errorType) {
+                const stringLiteralTypeName = type.value;
+                const intrinsicProp = getPropertyOfType(intrinsicElementsType, escapeLeadingUnderscores(stringLiteralTypeName));
+                if (intrinsicProp) {
+                    return getTypeOfSymbol(intrinsicProp);
                 }
-                // If we need to report an error, we already done so here. So just return any to prevent any more error downstream
-                return anyType;
+                const indexSignatureType = getIndexTypeOfType(intrinsicElementsType, IndexKind.String);
+                if (indexSignatureType) {
+                    return indexSignatureType;
+                }
+                return undefined;
+            }
+            // If we need to report an error, we already done so here. So just return any to prevent any more error downstream
+            return anyType;
         }
 
         function checkJsxReturnAssignableToAppropriateBound(refKind: JsxReferenceKind, elemInstanceType: Type, openingLikeElement: Node) {
@@ -20972,7 +20971,7 @@ namespace ts {
                         getOrCreateTypeFromSignature(getSignatureInstantiationWithoutFillingInTypeArguments(contextualSignature, contextualSignature.typeParameters)) :
                         instantiatedType;
                     const inferenceTargetType = getReturnTypeOfSignature(signature);
-                     // Inferences made from return types have lower priority than all other inferences.
+                    // Inferences made from return types have lower priority than all other inferences.
                     inferTypes(context.inferences, inferenceSourceType, inferenceTargetType, InferencePriority.ReturnType);
                     // Create a type mapper for instantiating generic contextual types using the inferences made
                     // from the return type. We need a separate inference pass here because (a) instantiation of
@@ -23860,8 +23859,8 @@ namespace ts {
                         resultType = bigintType;
                     }
                     else if (isTypeAssignableToKind(leftType, TypeFlags.StringLike, /*strict*/ true) || isTypeAssignableToKind(rightType, TypeFlags.StringLike, /*strict*/ true)) {
-                            // If one or both operands are of the String primitive type, the result is of the String primitive type.
-                            resultType = stringType;
+                        // If one or both operands are of the String primitive type, the result is of the String primitive type.
+                        resultType = stringType;
                     }
                     else if (isTypeAny(leftType) || isTypeAny(rightType)) {
                         // Otherwise, the result is of type Any.
@@ -24053,7 +24052,7 @@ namespace ts {
                     case SyntaxKind.ExclamationEqualsEqualsToken:
                     case SyntaxKind.ExclamationEqualsToken:
                         return error(errNode, Diagnostics.This_condition_will_always_return_0_since_the_types_1_and_2_have_no_overlap, "true", leftStr, rightStr);
-                    }
+                }
                 return undefined;
             }
         }
@@ -26272,8 +26271,8 @@ namespace ts {
                         node.typeExpression && node.typeExpression.type &&
                         !isArrayType(getTypeFromTypeNode(node.typeExpression.type))) {
                         error(node.name,
-                              Diagnostics.JSDoc_param_tag_has_name_0_but_there_is_no_parameter_with_that_name_It_would_match_arguments_if_it_had_an_array_type,
-                              idText(node.name.kind === SyntaxKind.QualifiedName ? node.name.right : node.name));
+                            Diagnostics.JSDoc_param_tag_has_name_0_but_there_is_no_parameter_with_that_name_It_would_match_arguments_if_it_had_an_array_type,
+                            idText(node.name.kind === SyntaxKind.QualifiedName ? node.name.right : node.name));
                     }
                 }
             }
@@ -27739,17 +27738,16 @@ namespace ts {
         function checkLabeledStatement(node: LabeledStatement) {
             // Grammar checking
             if (!checkGrammarStatementInAmbientContext(node)) {
-                findAncestor(node.parent,
-                             current => {
-                                 if (isFunctionLike(current)) {
-                                     return "quit";
-                                 }
-                                 if (current.kind === SyntaxKind.LabeledStatement && (<LabeledStatement>current).label.escapedText === node.label.escapedText) {
-                                     grammarErrorOnNode(node.label, Diagnostics.Duplicate_label_0, getTextOfNode(node.label));
-                                     return true;
-                                 }
-                                 return false;
-                             });
+                findAncestor(node.parent, current => {
+                    if (isFunctionLike(current)) {
+                        return "quit";
+                    }
+                    if (current.kind === SyntaxKind.LabeledStatement && (<LabeledStatement>current).label.escapedText === node.label.escapedText) {
+                        grammarErrorOnNode(node.label, Diagnostics.Duplicate_label_0, getTextOfNode(node.label));
+                        return true;
+                    }
+                    return false;
+                });
             }
 
             // ensure that label is unique
@@ -30237,7 +30235,7 @@ namespace ts {
             let target: Symbol | undefined;
             let next: Symbol | undefined = symbol;
             while (next = getSymbolLinks(next).target) {
-               target = next;
+                target = next;
             }
             return target;
         }
@@ -32429,7 +32427,7 @@ namespace ts {
                 node.kind === SyntaxKind.ExportAssignment ||
                 node.kind === SyntaxKind.NamespaceExportDeclaration ||
                 hasModifier(node, ModifierFlags.Ambient | ModifierFlags.Export | ModifierFlags.Default)) {
-                    return false;
+                return false;
             }
 
             return grammarErrorOnFirstToken(node, Diagnostics.Top_level_declarations_in_d_ts_files_must_start_with_either_a_declare_or_export_modifier);

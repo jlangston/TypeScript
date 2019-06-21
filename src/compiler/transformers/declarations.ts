@@ -1488,7 +1488,7 @@ namespace ts {
             case SyntaxKind.FunctionType:
             case SyntaxKind.ConstructorType:
             case SyntaxKind.ImportType:
-            return true;
+                return true;
         }
         return false;
     }
