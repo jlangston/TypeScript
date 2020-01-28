@@ -79,6 +79,7 @@
         "codefixes/fixUnusedLabel.ts",
         "codefixes/fixJSDocTypes.ts",
         "codefixes/fixAwaitInSyncFunction.ts",
+        "codefixes/fixAsyncReturnType.ts",
         "codefixes/disableJsDiagnostics.ts",
         "codefixes/helpers.ts",
         "codefixes/fixInvalidImportSyntax.ts",

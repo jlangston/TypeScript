@@ -211,7 +211,7 @@
         "category": "Error",
         "code": 1063
     },
-    "The return type of an async function or method must be the global Promise<T> type.": {
+    "The return type of an async function or method must be the global Promise<T> type. Did you mean to write Promise<{0}>?": {
         "category": "Error",
         "code": 1064
     },
