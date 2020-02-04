@@ -17,6 +17,7 @@ namespace ts.Completions {
         Export              = 1 << 2,
         Promise             = 1 << 3,
         Nullable            = 1 << 4,
+        PromiseProperty     = 1 << 5,
 
         SymbolMemberNoExport = SymbolMember,
         SymbolMemberExport   = SymbolMember | Export,
@@ -46,6 +47,10 @@ namespace ts.Completions {
 
     function originIsPromise(origin: SymbolOriginInfo): boolean {
         return !!(origin.kind & SymbolOriginInfoKind.Promise);
+    }
+
+    function originIsPromiseProperty(origin: SymbolOriginInfo): boolean {
+        return !!(origin.kind & SymbolOriginInfoKind.PromiseProperty);
     }
 
     function originIsNullableMember(origin: SymbolOriginInfo): boolean {
@@ -372,7 +377,8 @@ namespace ts.Completions {
                 replacementSpan = createTextSpanFromNode(isJsxInitializer, sourceFile);
             }
         }
-        if (origin && originIsPromise(origin) && propertyAccessToConvert) {
+
+        if (propertyAccessToConvert && origin && (originIsPromise(origin) || originIsPromiseProperty(origin))) {
             if (insertText === undefined) insertText = name;
             const precedingToken = findPrecedingToken(propertyAccessToConvert.pos, sourceFile);
             let awaitText = "";
@@ -380,9 +386,30 @@ namespace ts.Completions {
                 awaitText = ";";
             }
 
-            awaitText += `(await ${propertyAccessToConvert.expression.getText()})`;
-            insertText = needsConvertPropertyAccess ? `${awaitText}${insertText}` : `${awaitText}${insertQuestionDot ? "?." : "."}${insertText}`;
-            replacementSpan = createTextSpanFromBounds(propertyAccessToConvert.getStart(sourceFile), propertyAccessToConvert.end);
+            if (originIsPromiseProperty(origin)) {
+                const parent = findAncestor(propertyAccessToConvert, isAwaitExpression);
+                if (parent) {
+                    awaitText += `(${parent.getText().slice(0, -1)})`;
+                    insertText = needsConvertPropertyAccess ? `${awaitText}${insertText}` : `${awaitText}${insertQuestionDot ? "?." : "."}${insertText}`;
+                    replacementSpan = createTextSpanFromBounds(propertyAccessToConvert.getStart(sourceFile), propertyAccessToConvert.end);
+                }
+            } else {
+              awaitText += `(await ${propertyAccessToConvert.expression.getText()})`;
+                insertText = needsConvertPropertyAccess ? `${awaitText}${insertText}` : `${awaitText}${insertQuestionDot ? "?." : "."}${insertText}`;
+                replacementSpan = createTextSpanFromBounds(propertyAccessToConvert.getStart(sourceFile), propertyAccessToConvert.end);
+            }
+
+            // let replacementSpanStart = propertyAccessToConvert.getStart(sourceFile);
+            // if (originIsPromiseProperty(origin)) {
+            //     const parent = findAncestor(precedingToken, isAwaitExpression);
+            //     if (parent) {
+            //         replacementSpanStart = parent.getStart(sourceFile);
+            //     }
+            // }
+            //
+            // precedingToken.parent.getText()
+
+
         }
 
         if (insertText !== undefined && !preferences.includeCompletionsWithInsertText) {
@@ -1236,7 +1263,11 @@ namespace ts.Completions {
             function addSymbolOriginInfo(symbol: Symbol) {
                 if (preferences.includeCompletionsWithInsertText) {
                     if (insertAwait && !symbolToOriginInfoMap[getSymbolId(symbol)]) {
-                        symbolToOriginInfoMap[getSymbolId(symbol)] = { kind: getNullableSymbolOriginInfoKind(SymbolOriginInfoKind.Promise) };
+                        const propType = typeChecker.getTypeAtLocation(symbol.valueDeclaration);
+                        const isPromise = !!typeChecker.getPromisedTypeOfPromise(propType);
+                        symbolToOriginInfoMap[getSymbolId(symbol)] = {
+                            kind: isPromise ? getNullableSymbolOriginInfoKind(SymbolOriginInfoKind.Promise) : SymbolOriginInfoKind.PromiseProperty
+                        };
                     }
                     else if (insertQuestionDot) {
                         symbolToOriginInfoMap[getSymbolId(symbol)] = { kind: SymbolOriginInfoKind.Nullable };
