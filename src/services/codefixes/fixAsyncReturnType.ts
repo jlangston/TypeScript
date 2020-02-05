@@ -17,23 +17,24 @@ namespace ts.codefix {
 
             const { returnType, token } = info;
             const changes = textChanges.ChangeTracker.with(context, t => doChange(t, sourceFile, checker, token, returnType));
-            return [createCodeFixActionWithoutFixAll(fixId, changes, [Diagnostics.Add_index_signature_for_property_0, checker.typeToString(returnType)])];
+            return [createCodeFixActionWithoutFixAll(fixId, changes, [Diagnostics.Add_index_signature_for_property_0, returnType])];
         },
         fixIds: [fixId],
     });
 
-    function doChange(changes: textChanges.ChangeTracker, sourceFile: SourceFile, checker: TypeChecker, token: Node, returnType: Type): void {
-        // if (isTypeReferenceType(returnType)) {}
-        // changes.replaceNode(sourceFile, token, createTypeReferenceNode("Promise", createNodeArray([returnType])));
+    function doChange(changes: textChanges.ChangeTracker, sourceFile: SourceFile, checker: TypeChecker, token: Node, returnType: string): void {
+        changes.replaceNodeWithText(sourceFile, token, `Promise<${ returnType }>`);
     }
 
-    function getInfo(sourceFile: SourceFile, checker: TypeChecker, pos: number): { returnType: Type, token: Node } | undefined {
+    function getInfo(sourceFile: SourceFile, checker: TypeChecker, pos: number): { returnType: string, token: Node } | undefined {
         if (isInJSFile(sourceFile)) {
             return undefined;
         }
 
         const token = getTokenAtPosition(sourceFile, pos);
-        const type = checker.getTypeAtLocation(token);
-        return { token, returnType: type };
+        const symbol = checker.getSymbolAtLocation(token);
+        if (symbol) {
+            return { token, returnType: checker.symbolToString(symbol) };
+        }
     }
 }
