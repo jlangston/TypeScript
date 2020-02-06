@@ -211,7 +211,7 @@
         "category": "Error",
         "code": 1063
     },
-    "The return type of an async function or method must be the global Promise<T> type. Did you mean to write Promise<{0}>?": {
+    "The return type of an async function or method must be the global Promise<T> type. Did you mean to write 'Promise<{0}>'?": {
         "category": "Error",
         "code": 1064
     },
@@ -5064,6 +5064,14 @@
     "Add parameter name": {
         "category": "Message",
         "code": 90034
+    },
+    "Replace '{0}' with 'Promise<{1}>'": {
+        "category": "Message",
+        "code": 90035
+    },
+    "Fix all incorrect return type of an async functions": {
+        "category": "Message",
+        "code": 90036
     },
     "Declare a private field named '{0}'.": {
         "category": "Message",
