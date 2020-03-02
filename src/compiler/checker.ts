@@ -23922,12 +23922,26 @@ namespace ts {
             return getSpellingSuggestion(name, symbols, getCandidateName);
             function getCandidateName(candidate: Symbol) {
                 const candidateName = symbolName(candidate);
-                return !startsWith(candidateName, "\"") && candidate.flags & meaning ? candidateName : undefined;
+                if (startsWith(candidateName, "\"")) {
+                    return undefined;
+                }
+
+                if (candidate.flags & meaning) {
+                    return candidateName;
+                }
+
+                if (candidate.flags & SymbolFlags.Alias) {
+                    const target = resolveAlias(candidate);
+                    if (target.flags & meaning) {
+                        return candidateName;
+                    }
+                }
+
+                return undefined;
             }
         }
 
         function markPropertyAsReferenced(prop: Symbol, nodeForCheckWriteOnly: Node | undefined, isThisAccess: boolean) {
-
             const valueDeclaration = prop && (prop.flags & SymbolFlags.ClassMember) && prop.valueDeclaration;
             if (!valueDeclaration) {
                 return;
