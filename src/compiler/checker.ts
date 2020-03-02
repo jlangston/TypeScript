@@ -31259,7 +31259,7 @@ namespace ts {
             const functionIsUsedInBody = forEachChild(body, function check(childNode): boolean | undefined {
                 if (isIdentifier(childNode)) {
                     const childSymbol = getSymbolAtLocation(childNode);
-                    if (childSymbol && childSymbol.id === testedFunctionSymbol.id) {
+                    if (childSymbol && getSymbolIfSameReference(testedFunctionSymbol, childSymbol)) {
                         return true;
                     }
                 }

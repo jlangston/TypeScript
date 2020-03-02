@@ -1,0 +1,59 @@
+tests/cases/compiler/truthinessCallExpressionCoercion2.ts(7,5): error TS2774: This condition will always return true since the function is always defined. Did you mean to call it instead?
+tests/cases/compiler/truthinessCallExpressionCoercion2.ts(15,7): error TS2451: Cannot redeclare block-scoped variable 'a'.
+tests/cases/compiler/truthinessCallExpressionCoercion2.ts(15,11): error TS2774: This condition will always return true since the function is always defined. Did you mean to call it instead?
+tests/cases/compiler/truthinessCallExpressionCoercion2.ts(16,7): error TS2451: Cannot redeclare block-scoped variable 'b'.
+tests/cases/compiler/truthinessCallExpressionCoercion2.ts(19,5): error TS2774: This condition will always return true since the function is always defined. Did you mean to call it instead?
+tests/cases/compiler/truthinessCallExpressionCoercion2.ts(27,7): error TS2451: Cannot redeclare block-scoped variable 'a'.
+tests/cases/compiler/truthinessCallExpressionCoercion2.ts(27,11): error TS2774: This condition will always return true since the function is always defined. Did you mean to call it instead?
+tests/cases/compiler/truthinessCallExpressionCoercion2.ts(28,7): error TS2451: Cannot redeclare block-scoped variable 'b'.
+tests/cases/compiler/truthinessCallExpressionCoercion2.ts(28,11): error TS2774: This condition will always return true since the function is always defined. Did you mean to call it instead?
+
+
+==== tests/cases/compiler/truthinessCallExpressionCoercion2.ts (9 errors) ====
+    const foo = {
+        test() {
+            return true;
+        }
+    }
+    
+    if (foo.test) { // error
+        ~~~~~~~~
+!!! error TS2774: This condition will always return true since the function is always defined. Did you mean to call it instead?
+        console.log(true);
+    }
+    
+    if (foo.test) { // ok
+        foo.test;
+    }
+    
+    const a = foo.test ? true : false; // error
+          ~
+!!! error TS2451: Cannot redeclare block-scoped variable 'a'.
+              ~~~~~~~~
+!!! error TS2774: This condition will always return true since the function is always defined. Did you mean to call it instead?
+    const b = foo.test ? foo.test : false; // ok
+          ~
+!!! error TS2451: Cannot redeclare block-scoped variable 'b'.
+    
+    function test() {}
+    if (test) { // error
+        ~~~~
+!!! error TS2774: This condition will always return true since the function is always defined. Did you mean to call it instead?
+        console.log(true);
+    }
+    
+    if (test) { // ok
+        test;
+    }
+    
+    const a = test ? true : false; // error
+          ~
+!!! error TS2451: Cannot redeclare block-scoped variable 'a'.
+              ~~~~
+!!! error TS2774: This condition will always return true since the function is always defined. Did you mean to call it instead?
+    const b = test ? test : false; // ok
+          ~
+!!! error TS2451: Cannot redeclare block-scoped variable 'b'.
+              ~~~~
+!!! error TS2774: This condition will always return true since the function is always defined. Did you mean to call it instead?
+    

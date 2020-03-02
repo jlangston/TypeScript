@@ -1,0 +1,92 @@
+=== tests/cases/compiler/truthinessCallExpressionCoercion2.ts ===
+const foo = {
+>foo : { test(): boolean; }
+>{    test() {        return true;    }} : { test(): boolean; }
+
+    test() {
+>test : () => boolean
+
+        return true;
+>true : true
+    }
+}
+
+if (foo.test) { // error
+>foo.test : () => boolean
+>foo : { test(): boolean; }
+>test : () => boolean
+
+    console.log(true);
+>console.log(true) : void
+>console.log : (message?: any, ...optionalParams: any[]) => void
+>console : Console
+>log : (message?: any, ...optionalParams: any[]) => void
+>true : true
+}
+
+if (foo.test) { // ok
+>foo.test : () => boolean
+>foo : { test(): boolean; }
+>test : () => boolean
+
+    foo.test;
+>foo.test : () => boolean
+>foo : { test(): boolean; }
+>test : () => boolean
+}
+
+const a = foo.test ? true : false; // error
+>a : boolean
+>foo.test ? true : false : boolean
+>foo.test : () => boolean
+>foo : { test(): boolean; }
+>test : () => boolean
+>true : true
+>false : false
+
+const b = foo.test ? foo.test : false; // ok
+>b : false | (() => boolean)
+>foo.test ? foo.test : false : false | (() => boolean)
+>foo.test : () => boolean
+>foo : { test(): boolean; }
+>test : () => boolean
+>foo.test : () => boolean
+>foo : { test(): boolean; }
+>test : () => boolean
+>false : false
+
+function test() {}
+>test : () => void
+
+if (test) { // error
+>test : () => void
+
+    console.log(true);
+>console.log(true) : void
+>console.log : (message?: any, ...optionalParams: any[]) => void
+>console : Console
+>log : (message?: any, ...optionalParams: any[]) => void
+>true : true
+}
+
+if (test) { // ok
+>test : () => void
+
+    test;
+>test : () => void
+}
+
+const a = test ? true : false; // error
+>a : boolean
+>test ? true : false : boolean
+>test : () => void
+>true : true
+>false : false
+
+const b = test ? test : false; // ok
+>b : false | (() => void)
+>test ? test : false : false | (() => void)
+>test : () => void
+>test : () => void
+>false : false
+

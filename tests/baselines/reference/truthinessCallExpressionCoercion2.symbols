@@ -1,0 +1,76 @@
+=== tests/cases/compiler/truthinessCallExpressionCoercion2.ts ===
+const foo = {
+>foo : Symbol(foo, Decl(truthinessCallExpressionCoercion2.ts, 0, 5))
+
+    test() {
+>test : Symbol(test, Decl(truthinessCallExpressionCoercion2.ts, 0, 13))
+
+        return true;
+    }
+}
+
+if (foo.test) { // error
+>foo.test : Symbol(test, Decl(truthinessCallExpressionCoercion2.ts, 0, 13))
+>foo : Symbol(foo, Decl(truthinessCallExpressionCoercion2.ts, 0, 5))
+>test : Symbol(test, Decl(truthinessCallExpressionCoercion2.ts, 0, 13))
+
+    console.log(true);
+>console.log : Symbol(Console.log, Decl(lib.dom.d.ts, --, --))
+>console : Symbol(console, Decl(lib.dom.d.ts, --, --))
+>log : Symbol(Console.log, Decl(lib.dom.d.ts, --, --))
+}
+
+if (foo.test) { // ok
+>foo.test : Symbol(test, Decl(truthinessCallExpressionCoercion2.ts, 0, 13))
+>foo : Symbol(foo, Decl(truthinessCallExpressionCoercion2.ts, 0, 5))
+>test : Symbol(test, Decl(truthinessCallExpressionCoercion2.ts, 0, 13))
+
+    foo.test;
+>foo.test : Symbol(test, Decl(truthinessCallExpressionCoercion2.ts, 0, 13))
+>foo : Symbol(foo, Decl(truthinessCallExpressionCoercion2.ts, 0, 5))
+>test : Symbol(test, Decl(truthinessCallExpressionCoercion2.ts, 0, 13))
+}
+
+const a = foo.test ? true : false; // error
+>a : Symbol(a, Decl(truthinessCallExpressionCoercion2.ts, 14, 5))
+>foo.test : Symbol(test, Decl(truthinessCallExpressionCoercion2.ts, 0, 13))
+>foo : Symbol(foo, Decl(truthinessCallExpressionCoercion2.ts, 0, 5))
+>test : Symbol(test, Decl(truthinessCallExpressionCoercion2.ts, 0, 13))
+
+const b = foo.test ? foo.test : false; // ok
+>b : Symbol(b, Decl(truthinessCallExpressionCoercion2.ts, 15, 5))
+>foo.test : Symbol(test, Decl(truthinessCallExpressionCoercion2.ts, 0, 13))
+>foo : Symbol(foo, Decl(truthinessCallExpressionCoercion2.ts, 0, 5))
+>test : Symbol(test, Decl(truthinessCallExpressionCoercion2.ts, 0, 13))
+>foo.test : Symbol(test, Decl(truthinessCallExpressionCoercion2.ts, 0, 13))
+>foo : Symbol(foo, Decl(truthinessCallExpressionCoercion2.ts, 0, 5))
+>test : Symbol(test, Decl(truthinessCallExpressionCoercion2.ts, 0, 13))
+
+function test() {}
+>test : Symbol(test, Decl(truthinessCallExpressionCoercion2.ts, 15, 38))
+
+if (test) { // error
+>test : Symbol(test, Decl(truthinessCallExpressionCoercion2.ts, 15, 38))
+
+    console.log(true);
+>console.log : Symbol(Console.log, Decl(lib.dom.d.ts, --, --))
+>console : Symbol(console, Decl(lib.dom.d.ts, --, --))
+>log : Symbol(Console.log, Decl(lib.dom.d.ts, --, --))
+}
+
+if (test) { // ok
+>test : Symbol(test, Decl(truthinessCallExpressionCoercion2.ts, 15, 38))
+
+    test;
+>test : Symbol(test, Decl(truthinessCallExpressionCoercion2.ts, 15, 38))
+}
+
+const a = test ? true : false; // error
+>a : Symbol(a, Decl(truthinessCallExpressionCoercion2.ts, 26, 5))
+>test : Symbol(test, Decl(truthinessCallExpressionCoercion2.ts, 15, 38))
+
+const b = test ? test : false; // ok
+>b : Symbol(b, Decl(truthinessCallExpressionCoercion2.ts, 27, 5))
+>test : Symbol(test, Decl(truthinessCallExpressionCoercion2.ts, 15, 38))
+>test : Symbol(test, Decl(truthinessCallExpressionCoercion2.ts, 15, 38))
+
