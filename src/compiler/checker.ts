@@ -10585,7 +10585,10 @@ namespace ts {
                         return symbol;
                     }
                 }
-                return getPropertyOfObjectType(globalObjectType, name);
+                if (globalObjectType) {
+                    return getPropertyOfObjectType(globalObjectType, name);
+                }
+                return undefined;
             }
             if (type.flags & TypeFlags.UnionOrIntersection) {
                 return getPropertyOfUnionOrIntersectionType(<UnionOrIntersectionType>type, name);
