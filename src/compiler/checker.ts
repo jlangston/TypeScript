@@ -22557,7 +22557,7 @@ namespace ts {
             // Grammar checking
             checkGrammarObjectLiteralExpression(node, inDestructuringPattern);
 
-            let propertiesTable: SymbolTable;
+            let propertiesTable = createSymbolTable();
             const allPropertiesTable = createSymbolTable();
             let propertiesArray: Symbol[] = [];
             let spread: Type = emptyObjectType;
@@ -22574,7 +22574,6 @@ namespace ts {
             let patternWithComputedProperties = false;
             let hasComputedStringProperty = false;
             let hasComputedNumberProperty = false;
-            propertiesTable = createSymbolTable();
 
             let offset = 0;
             for (let i = 0; i < node.properties.length; i++) {
@@ -22658,16 +22657,8 @@ namespace ts {
                         error(memberDecl, Diagnostics.Spread_types_may_only_be_created_from_object_types);
                         return errorType;
                     }
-                    for (const right of getPropertiesOfType(type)) {
-                        const rightType = getTypeOfSymbol(right);
-                        const left = allPropertiesTable.get(right.escapedName);
-                        if (strictNullChecks &&
-                            left &&
-                            !maybeTypeOfKind(rightType, TypeFlags.Nullable)) {
-                            error(left.valueDeclaration, Diagnostics._0_is_specified_more_than_once_so_this_usage_will_be_overwritten, unescapeLeadingUnderscores(left.escapedName));
-                        }
-                    }
 
+                    checkPropertyOverrides(type, allPropertiesTable, memberDecl);
                     spread = getSpreadType(spread, type, node.symbol, objectFlags, inConstContext);
                     offset = i + 1;
                     continue;
@@ -22838,6 +22829,7 @@ namespace ts {
          */
         function createJsxAttributesTypeFromAttributesProperty(openingLikeElement: JsxOpeningLikeElement, checkMode: CheckMode | undefined) {
             const attributes = openingLikeElement.attributes;
+            let allAttributesTable = createSymbolTable();
             let attributesTable = createSymbolTable();
             let spread: Type = emptyJsxObjectType;
             let hasSpreadAnyType = false;
@@ -22861,6 +22853,7 @@ namespace ts {
                     attributeSymbol.type = exprType;
                     attributeSymbol.target = member;
                     attributesTable.set(attributeSymbol.escapedName, attributeSymbol);
+                    allAttributesTable.set(attributeSymbol.escapedName, attributeSymbol);
                     if (attributeDecl.name.escapedText === jsxChildrenPropertyName) {
                         explicitlySpecifyChildrenAttribute = true;
                     }
@@ -22877,6 +22870,7 @@ namespace ts {
                     }
                     if (isValidSpreadType(exprType)) {
                         spread = getSpreadType(spread, exprType, attributes.symbol, objectFlags, /*readonly*/ false);
+                        checkPropertyOverrides(exprType, allAttributesTable, attributeDecl);
                     }
                     else {
                         typeToIntersect = typeToIntersect ? getIntersectionType([typeToIntersect, exprType]) : exprType;
@@ -22959,6 +22953,19 @@ namespace ts {
                 }
             }
             return childrenTypes;
+        }
+
+        function checkPropertyOverrides(type: Type, props: SymbolTable, spread: SpreadAssignment | JsxSpreadAttribute) {
+            if (strictNullChecks) {
+                for (const right of getPropertiesOfType(type)) {
+                    const rightType = getTypeOfSymbol(right);
+                    const left = props.get(right.escapedName);
+                    if (left && !maybeTypeOfKind(rightType, TypeFlags.Nullable)) {
+                        const diagnostic = error(left.valueDeclaration, Diagnostics._0_is_specified_more_than_once_so_this_usage_will_be_overwritten, unescapeLeadingUnderscores(left.escapedName));
+                        addRelatedInfo(diagnostic, createDiagnosticForNode(spread, Diagnostics.This_spread_always_overwrites_this_property));
+                    }
+                }
+            }
         }
 
         /**
