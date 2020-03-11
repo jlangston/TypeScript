@@ -91,7 +91,7 @@ namespace ts.refactor.generateGetAccessorAndSetAccessor {
         return { renameFilename, renameLocation, edits };
     }
 
-    function isConvertibleName (name: DeclarationName): name is AcceptedNameType {
+    function isConvertibleName(name: DeclarationName): name is AcceptedNameType {
         return isIdentifier(name) || isStringLiteral(name);
     }
 
