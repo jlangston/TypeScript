@@ -216,7 +216,9 @@ namespace ts.Completions.StringCompletions {
     function stringLiteralCompletionsFromProperties(type: Type | undefined): StringLiteralCompletionsFromProperties | undefined {
         return type && {
             kind: StringLiteralCompletionKind.Properties,
-            symbols: type.getApparentProperties().filter(prop => !isPrivateIdentifierPropertyDeclaration(prop.valueDeclaration)),
+            symbols: type.getApparentProperties().filter(prop => {
+                return !isPrivateIdentifierPropertyDeclaration(isTransientSymbol(prop) && prop.syntheticOrigin ? prop.syntheticOrigin.valueDeclaration : prop.valueDeclaration);
+            }),
             hasIndexSignature: hasIndexSignature(type)
         };
     }
