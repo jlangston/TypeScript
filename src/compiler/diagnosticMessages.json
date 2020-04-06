@@ -5185,6 +5185,10 @@
         "category": "Message",
         "code": 90035
     },
+    "Declare private method '{0}'": {
+        "category": "Message",
+        "code": 90036
+    },
     "Declare a private field named '{0}'.": {
         "category": "Message",
         "code": 90053
