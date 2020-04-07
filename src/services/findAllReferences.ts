@@ -216,7 +216,32 @@ namespace ts.FindAllReferences {
 
     export function getImplementationsAtPosition(program: Program, cancellationToken: CancellationToken, sourceFiles: readonly SourceFile[], sourceFile: SourceFile, position: number): ImplementationLocation[] | undefined {
         const node = getTouchingPropertyName(sourceFile, position);
-        const referenceEntries = getImplementationReferenceEntries(program, cancellationToken, sourceFiles, node, position);
+        let referenceEntries: Entry[] | undefined;
+        const entries = getImplementationReferenceEntries(program, cancellationToken, sourceFiles, node, position);
+
+        if (
+            node.parent.kind === SyntaxKind.PropertyAccessExpression
+            || node.parent.kind === SyntaxKind.BindingElement
+            || node.parent.kind === SyntaxKind.ElementAccessExpression
+            || node.kind === SyntaxKind.SuperKeyword
+        ) {
+            referenceEntries = entries && [...entries];
+        }
+        else {
+            const queue = entries && [...entries];
+            const seenNodes = createMap<true>();
+            while (queue && queue.length) {
+                const entry = queue.shift() as NodeEntry;
+                if (!addToSeen(seenNodes, getNodeId(entry.node))) {
+                    continue;
+                }
+                referenceEntries = append(referenceEntries, entry);
+                const entries = getImplementationReferenceEntries(program, cancellationToken, sourceFiles, entry.node, entry.node.pos);
+                if (entries) {
+                    queue.push(...entries);
+                }
+            }
+        }
         const checker = program.getTypeChecker();
         return map(referenceEntries, entry => toImplementationLocation(entry, checker));
     }
@@ -1174,16 +1199,16 @@ namespace ts.FindAllReferences {
         }
 
         /** Used as a quick check for whether a symbol is used at all in a file (besides its definition). */
-        export function isSymbolReferencedInFile(definition: Identifier, checker: TypeChecker, sourceFile: SourceFile): boolean {
-            return eachSymbolReferenceInFile(definition, checker, sourceFile, () => true) || false;
+        export function isSymbolReferencedInFile(definition: Identifier, checker: TypeChecker, sourceFile: SourceFile, searchContainer: Node = sourceFile): boolean {
+            return eachSymbolReferenceInFile(definition, checker, sourceFile, () => true, searchContainer) || false;
         }
 
-        export function eachSymbolReferenceInFile<T>(definition: Identifier, checker: TypeChecker, sourceFile: SourceFile, cb: (token: Identifier) => T): T | undefined {
+        export function eachSymbolReferenceInFile<T>(definition: Identifier, checker: TypeChecker, sourceFile: SourceFile, cb: (token: Identifier) => T, searchContainer: Node = sourceFile): T | undefined {
             const symbol = isParameterPropertyDeclaration(definition.parent, definition.parent.parent)
                 ? first(checker.getSymbolsOfParameterPropertyDeclaration(definition.parent, definition.text))
                 : checker.getSymbolAtLocation(definition);
             if (!symbol) return undefined;
-            for (const token of getPossibleSymbolReferenceNodes(sourceFile, symbol.name)) {
+            for (const token of getPossibleSymbolReferenceNodes(sourceFile, symbol.name, searchContainer)) {
                 if (!isIdentifier(token) || token === definition || token.escapedText !== definition.escapedText) continue;
                 const referenceSymbol: Symbol = checker.getSymbolAtLocation(token)!; // See GH#19955 for why the type annotation is necessary
                 if (referenceSymbol === symbol
