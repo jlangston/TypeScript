@@ -6,6 +6,13 @@
 ////};
 ////
 ////type A = Readonly<Foo>;
-////type B = A["/**/"]
+////type B = A["[|/**/|]"]
 
-verify.completions({ marker: "", exact: ["a", "b"] });
+const replacementSpan = test.ranges()[0];
+verify.completions({
+    marker: "",
+    exact: [
+        { name: "a", replacementSpan },
+        { name: "b", replacementSpan }
+    ]
+});
