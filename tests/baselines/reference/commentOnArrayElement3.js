@@ -16,4 +16,5 @@ var array = [
     2
     /* end of element 2 */ ,
     ,
+    /* extra comment */
 ];

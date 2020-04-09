@@ -1,0 +1,8 @@
+=== tests/cases/compiler/commentOnArrayElement5.ts ===
+var array = [
+>array : Symbol(array, Decl(commentOnArrayElement5.ts, 0, 3))
+
+    /* element 1 */
+    1,
+    /* end of element */
+];

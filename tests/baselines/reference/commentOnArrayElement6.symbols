@@ -1,0 +1,9 @@
+=== tests/cases/compiler/commentOnArrayElement6.ts ===
+var array = [
+>array : Symbol(array, Decl(commentOnArrayElement6.ts, 0, 3))
+
+    // element 1
+    1,
+    // end of element 1
+    // extra comment
+];

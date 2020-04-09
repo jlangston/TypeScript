@@ -4109,7 +4109,6 @@ namespace ts {
                     writePunctuation(",");
                 }
 
-
                 // Emit any trailing comment of the last element in the list
                 // i.e
                 //       var array = [...
@@ -4117,7 +4116,7 @@ namespace ts {
                 //          /* end of element 2 */
                 //       ];
                 if (previousSibling && format & ListFormat.DelimitersMask && previousSibling.end !== parentNode.end && !(getEmitFlags(previousSibling) & EmitFlags.NoTrailingComments)) {
-                    emitLeadingCommentsOfPosition(previousSibling.end);
+                    emitLeadingCommentsOfPosition(hasTrailingComma && children?.end ? children.end : previousSibling.end);
                 }
 
                 // Decrease the indent, if requested.
