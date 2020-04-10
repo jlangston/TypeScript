@@ -9969,7 +9969,8 @@ namespace ts {
          * return the symbol for that property. Otherwise return undefined.
          */
         function getPropertyOfObjectType(type: Type, name: __String): Symbol | undefined {
-            if (type.flags & TypeFlags.Object) {
+            if (!type){return}
+            if (type && type.flags & TypeFlags.Object) {
                 const resolved = resolveStructuredTypeMembers(<ObjectType>type);
                 const symbol = resolved.members.get(name);
                 if (symbol && symbolIsValue(symbol)) {
@@ -10585,10 +10586,14 @@ namespace ts {
                         return symbol;
                     }
                 }
-                // if (globalObjectType) { */}
-                    return getPropertyOfObjectType(globalObjectType, name);
-                // }
-                // return undefined;
+                if (globalObjectType) {
+                    try {
+                        return getPropertyOfObjectType(globalObjectType, name);
+                    } catch (e) {
+                     return  undefined;
+                    }
+                }
+                return undefined;
             }
             if (type.flags & TypeFlags.UnionOrIntersection) {
                 return getPropertyOfUnionOrIntersectionType(<UnionOrIntersectionType>type, name);
